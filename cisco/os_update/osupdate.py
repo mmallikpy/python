@@ -8,3 +8,6 @@ This project goal
 6. And some information will collect like Uptime, memory, os version, hostname, device serial, cdp, routing status, ect...
 7. Then update.
 """
+from netmiko import ConnectHandler
+import os
+import time
