@@ -1,3 +1,8 @@
+"""
+This script for cisco device backup using running config. It's get the device ip address from a file [DeviceIPList.txt].
+My case my all device have multiple user and password sor I use exception.
+"""
+
 from netmiko import ConnectHandler
 import os
 import time
@@ -30,8 +35,10 @@ with open("DeviceIPList.txt", "r") as a_file:
         # Opening a file for save the configuration.
         backupfile = open(f"{folder_name}/{backup_name[1]}_{ip_addr}", "a")
         backupfile.write(runningconfig)
+        # File close
         backupfile.close()
         print(f'---------------Backup_Success------------------------------------\n')
+
     except:
         cisco_devices = {
             'device_type': 'cisco_ios',
@@ -52,5 +59,6 @@ with open("DeviceIPList.txt", "r") as a_file:
         # Opening a file for save the configuration.
         backupfile = open(f"{folder_name}/{backup_name[1]}_{ip_addr}", "a")
         backupfile.write(runningconfig)
+        # File close
         backupfile.close()
         print(f'---------------Backup_Success------------------------------------\n')
