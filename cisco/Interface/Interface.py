@@ -1,17 +1,17 @@
 from netmiko import ConnectHandler
-import json
-from pprint import pprint
 import re
+from prettytable import PrettyTable
+
 
 def device_access(ip):
     global ssh
     cisco_devices = {
         'device_type': 'cisco_ios',
         'host': ip,
-        'username': 'userName',
+        'username': 'user',
         'password': 'Password',
         'port': 22,  # SSH port if you have custom port you can use it
-        'secret': 'Secret',  # Enable password
+        'secret': 'Password',  # Enable password
     }
 
     ssh = ConnectHandler(**cisco_devices)
@@ -29,16 +29,13 @@ def admin_down_interface(command):
         if info["status"] != "up" and info["proto"] != "up":
             print(info["intf"] + " Is disconnected or Admin down this port")
 
+'''
 
-def cable_disconnected(command):
-    for info in command:
-        if info["proto"] != "up":
-            print(info["intf"] + " Is cable disconnected")
 
 
 def where_user_connected():
     pass
-'''
+
 
 def neighborsDisplay(ip):
     """
@@ -79,28 +76,44 @@ def neighborToPortDescription(ip):
         ssh.send_command("do wr")
     print("")
 
-# ---------------------------------------------------------------------------------------------------------------------------------------
 def cpu_usages(ip):
+    """
+    This function show the current CPU usages.\
+    Tested on CAT Switch and ISR router
+    """
     device_access(ip)
     output = ssh.send_command('show processes memory', use_textfsm=True)
-    # result = pprint(output.split("\n"))
     process = output[:67]
-    print(process)
-    Toral, Used, Free = re.findall('\d*\d', process)
-    print(Toral)
-    '''
-    total = process.split("  ")
-    for x in total:
-        if x != total[0]:
-            print(x.split(" "))
-    '''
+    Total, Used, Free = re.findall('\d*\d', process)
+    outputT = PrettyTable(["Total Pool", "Used", "Free"])
+    outputT.add_row([f"{Total}", f"{Used}", f"{Free}"])
+    print(f'################ Working on {ip} ################')
+    print(outputT)
+    print('')
+
+
+def cable_disconnected(ip):
+    device_access(ip)
+    output = ssh.send_command('show ip interface br', use_textfsm=True)
+    outputTup = PrettyTable(['Interface', 'Cable Down/Up'])
+    outputTup.align='l'
+
+    for x in output:
+        if x['proto'] == 'up':
+            outputTup.add_row([f"{x['intf']}", f"{x['proto']}"])
+    print(outputTup)
+
+
+    #for info in command:
+    #    if info["proto"] != "up":
+    #        print(info["intf"] + " Is cable disconnected")
+# ---------------------------------------------------------------------------------------------------------------------------------------
 
 '''
 # It's Example never remove it.
 for host in ips:
     neighborsDisplay(host)
 '''
-
-ips = ["172.16.201.12"]
+ips = ["172.16.200.2"]
 for host in ips:
-    cpu_usages(host)
+    cable_disconnected(host)
