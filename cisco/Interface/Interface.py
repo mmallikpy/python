@@ -16,22 +16,6 @@ def device_access(ip):
 
     ssh = ConnectHandler(**cisco_devices)
 
-'''
-def up_interface(command):
-    # Show the configured and up interface.
-    for info in command:
-        if info["ipaddr"] != "unassigned" and info["status"] == "up" and info["proto"] == "up":
-            print("Interface " + info["intf"] + " Is up,", "And Configured IP is " + info["ipaddr"])
-
-
-def admin_down_interface(command):
-    for info in command:
-        if info["status"] != "up" and info["proto"] != "up":
-            print(info["intf"] + " Is disconnected or Admin down this port")
-
-'''
-
-
 
 def where_user_connected():
     pass
@@ -44,7 +28,6 @@ def neighborsDisplay(ip):
     """
     device_access(ip)
     output = ssh.send_command('show cdp neighbors detail', use_textfsm=True)
-    print(f'################ {ip} ################')
 
     for x in output:
         print("Local Device :- ")
@@ -64,7 +47,6 @@ def neighborToPortDescription(ip):
     """
     device_access(ip)
     output = ssh.send_command('show cdp neighbors detail', use_textfsm=True)
-    print(f'################ Working on {ip} ################')
 
     for x in output:
         dest_host = x['destination_host']
@@ -78,7 +60,7 @@ def neighborToPortDescription(ip):
 
 def cpu_usages(ip):
     """
-    This function show the current CPU usages.\
+    This function show the current CPU usages.
     Tested on CAT Switch and ISR router
     """
     device_access(ip)
@@ -87,26 +69,80 @@ def cpu_usages(ip):
     Total, Used, Free = re.findall('\d*\d', process)
     outputT = PrettyTable(["Total Pool", "Used", "Free"])
     outputT.add_row([f"{Total}", f"{Used}", f"{Free}"])
-    print(f'################ Working on {ip} ################')
     print(outputT)
     print('')
 
 
-def cable_disconnected(ip):
+def up_interface(ip):
+    """
+    This function show the UP Interface only.
+    Tested on CAT Switch and ISR router
+    """
     device_access(ip)
     output = ssh.send_command('show ip interface br', use_textfsm=True)
-    outputTup = PrettyTable(['Interface', 'Cable Down/Up'])
-    outputTup.align='l'
+    outputTup = PrettyTable(['Interface', 'CableUp'])
+    outputTup.align = 'l'
 
     for x in output:
         if x['proto'] == 'up':
             outputTup.add_row([f"{x['intf']}", f"{x['proto']}"])
     print(outputTup)
 
+def down_interface(ip):
+    """
+    This function show the Down Interface only.
+    Tested on CAT Switch and ISR router
+    """
+    device_access(ip)
+    output = ssh.send_command('show ip interface br', use_textfsm=True)
+    outputTdown = PrettyTable(['Interface', 'CableDown'])
+    outputTdown.align = 'l'
 
-    #for info in command:
-    #    if info["proto"] != "up":
-    #        print(info["intf"] + " Is cable disconnected")
+    for x in output:
+        if x['proto'] == 'down':
+            outputTdown.add_row([f"{x['intf']}", f"{x['proto']}"])
+    print(outputTdown)
+
+def down_by_admin_interface(ip):
+    """
+    This function show the administratively down Interface only.
+    Tested on CAT Switch and ISR router
+    """
+    device_access(ip)
+    output = ssh.send_command('show ip interface br', use_textfsm=True)
+    outputTAdown = PrettyTable(['Interface', 'DownByAdmin'])
+    outputTAdown.align = 'l'
+    for x in output:
+        if x['proto'] == 'down' and x['status'] == "administratively down":
+            outputTAdown.add_row([f"{x['intf']}", f"{x['proto']}"])
+    print(outputTAdown, '\n')
+
+# ----------------------------------Current Working area-----------------------------------------------------------------------------------------------------
+
+def arpToSwitchPortDescription():
+    '''
+    device_access(ip)
+    output = ssh.send_command('show ip arp', use_textfsm=True)
+    arp = PrettyTable(['IP', 'MAC'])
+    arp.align = 'l'
+
+    switchip = ['172.16.201.12']
+
+    for x in output:
+        arp.add_row([f"{x['address']}", f"{x['mac']}"])
+        for swip in switchip:
+            device_access(swip)
+            get_mac_in_port = ssh.send_command(f"show mac address-table address {x['mac']}", use_textfsm=True)
+            print(get_mac_in_port)
+    '''
+
+    switchip = ['172.16.201.12']
+    for swip in switchip:
+        device_access(swip)
+        get_mac_in_port = ssh.send_command("show mac address-table address e8d8.d157.a5fd", use_textfsm=True)
+        print(get_mac_in_port)
+    # print(arp)
+
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
 '''
@@ -114,6 +150,16 @@ def cable_disconnected(ip):
 for host in ips:
     neighborsDisplay(host)
 '''
-ips = ["172.16.200.2"]
+ips = ["172.16.200.3"]
 for host in ips:
-    cable_disconnected(host)
+    print(f'################ Working on {host} ################')
+    # neighborsDisplay(host)
+    # neighborToPortDescription(host)
+    # cpu_usages(host)
+    # up_interface(host)
+    # down_interface(host)
+    # down_by_admin_interface(host)
+arpToSwitchPortDescription()
+
+
+
