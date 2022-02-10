@@ -8,10 +8,10 @@ def device_access(ip):
     cisco_devices = {
         'device_type': 'cisco_ios',
         'host': ip,
-        'username': 'mithun',
-        'password': 'M1thun#As@',
+        'username': 'user',
+        'password': 'password',
         'port': 22,  # SSH port if you have custom port you can use it
-        'secret': 'M1thun#As@',  # Enable password
+        'secret': 'password',  # Enable password
     }
 
     ssh = ConnectHandler(**cisco_devices)
