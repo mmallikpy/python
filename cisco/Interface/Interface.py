@@ -8,10 +8,10 @@ def device_access(ip):
     cisco_devices = {
         'device_type': 'cisco_ios',
         'host': ip,
-        'username': 'user',
-        'password': 'Password',
+        'username': 'mithun',
+        'password': 'M1thun#As@',
         'port': 22,  # SSH port if you have custom port you can use it
-        'secret': 'Password',  # Enable password
+        'secret': 'M1thun#As@',  # Enable password
     }
 
     ssh = ConnectHandler(**cisco_devices)
@@ -119,29 +119,48 @@ def down_by_admin_interface(ip):
 
 # ----------------------------------Current Working area-----------------------------------------------------------------------------------------------------
 
-def arpToSwitchPortDescription():
-    '''
+def arpToSwitchPortDescription(ip):
+
     device_access(ip)
     output = ssh.send_command('show ip arp', use_textfsm=True)
-    arp = PrettyTable(['IP', 'MAC'])
-    arp.align = 'l'
-
-    switchip = ['172.16.201.12']
-
+    # IP and MAC save in a File from Gateway.
+    macIpSave = open("macIp.txt", 'w')
     for x in output:
-        arp.add_row([f"{x['address']}", f"{x['mac']}"])
-        for swip in switchip:
-            device_access(swip)
-            get_mac_in_port = ssh.send_command(f"show mac address-table address {x['mac']}", use_textfsm=True)
-            print(get_mac_in_port)
-    '''
+        macIpSave.write(f"{x['address']} {x['mac']}\n")
 
-    switchip = ['172.16.201.12']
-    for swip in switchip:
-        device_access(swip)
-        get_mac_in_port = ssh.send_command("show mac address-table address e8d8.d157.a5fd", use_textfsm=True)
-        print(get_mac_in_port)
-    # print(arp)
+    # Search MAC in switches
+    swli = ['172.16.201.12']
+    for x in swli:
+        device_access(x)    # Login a switch
+        interfaces = ssh.send_command("show interfaces status", use_textfsm=True)
+
+        # Access port find and add accessPorts list
+        accessPorts = []
+        mac_count = 0
+        for y in interfaces:
+            get_mac = ssh.send_command(f"show mac address-table interface {y['port']}", use_textfsm=True)
+            try:
+                for mac in get_mac:
+                    print(mac['destination_address'])
+                    mac_count += 1
+            except:
+                pass
+           
+            if mac_count > 1:
+                pass
+            else:
+                accessPorts.append(f"{y['port']}")
+        print(accessPorts)
+
+        '''
+        
+        for count in interfaces:
+        '''
+
+
+
+
+
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -159,7 +178,7 @@ for host in ips:
     # up_interface(host)
     # down_interface(host)
     # down_by_admin_interface(host)
-arpToSwitchPortDescription()
+    arpToSwitchPortDescription(host)
 
 
 
