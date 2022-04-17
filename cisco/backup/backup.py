@@ -19,10 +19,10 @@ with open("DeviceIPList.txt", "r") as a_file:
         cisco_devices = {
             'device_type': 'cisco_ios',
             'host': ip_addr,
-            'username': 'mithun',
-            'password': 'M1thun#As@',
+            'username': 'userName',
+            'password': 'Password',
             'port': 22,                        # SSH port if you have custom port you can use it
-            "secret": "M1thun#As@",              # Enable password
+            "secret": "secret",              # Enable password
         }
         ssh = ConnectHandler(**cisco_devices)
         ssh.enable()
@@ -43,10 +43,10 @@ with open("DeviceIPList.txt", "r") as a_file:
         cisco_devices = {
             'device_type': 'cisco_ios',
             'host': ip_addr,
-            'username': 'admin',
-            'password': 'C1sc0@asa',
+            'username': '2nduser',
+            'password': 'password',
             'port': 22,  # SSH port if you have custom port you can use it
-            "secret": "C1sc0@asa",  # Enable password
+            "secret": "password",  # Enable password
         }
         ssh = ConnectHandler(**cisco_devices)
         ssh.enable()
