@@ -2,6 +2,7 @@ import os
 import socket
 from openpyxl import load_workbook  # For Excel.
 
+# https://www.youtube.com/watch?v=TluyP4n6n-U
 # IP Series List
 # IP list using ping
 # Find FQDN
