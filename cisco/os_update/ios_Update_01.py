@@ -45,9 +45,9 @@ def ios_version_check(ip_addr):
         'device_type': 'cisco_ios',
         'host': ip_addr,
         'username': 'mithun',
-        'password': 'M1thun#As@',
+        'password': '',
         'port': 22,                        # SSH port if you have custom port you can use it
-        "secret": "M1thun#As@",              # Enable password
+        "secret": "",              # Enable password
     }
     ssh = ConnectHandler(**cisco_devices)
     ssh.enable()

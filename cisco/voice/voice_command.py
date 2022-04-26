@@ -24,9 +24,9 @@ while True:
                     'device_type': 'cisco_ios',
                     'host': '172.16.201.12',
                     'username': 'mithun',
-                    'password': 'M1thun#As@',
+                    'password': '',
                     'port': 22,  # SSH port if you have custom port you can use it
-                    'secret': 'M1thun#As@',  # Enable password
+                    'secret': '',  # Enable password
                 }
                 ssh = ConnectHandler(**cisco_devices)
                 '''
