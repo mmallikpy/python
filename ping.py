@@ -1,5 +1,6 @@
 import os
 import socket
+from black import out
 from openpyxl import load_workbook  # For Excel.
 
 # https://www.youtube.com/watch?v=TluyP4n6n-U
@@ -28,5 +29,5 @@ for subnetFP in li_subnet:
             print("------", fqdn)
             dicForInsert[f"{subnetFP}.{ip}"] = fqdn
             excel_sheet1 = excel_sheet.active
-            excel_sheet1.append(dicForInsert)[excel_sheet("172.16.7")]
+            excel_sheet1["A"].append(dicForInsert)
             excel_sheet.save("ip_fqdn.xlsx")
