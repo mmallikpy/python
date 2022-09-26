@@ -1,0 +1,8 @@
+sudo apt install -y virtualenv
+sudo apt install -y python3-venv
+
+mkdir project1
+python3 -m venv
+source project1/bin/activate
+cd project1
+code .        # If you want to open vscode from this folder
