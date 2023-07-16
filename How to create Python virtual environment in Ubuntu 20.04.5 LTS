@@ -6,3 +6,24 @@ python3 -m venv
 source project1/bin/activate
 cd project1
 code .        # If you want to open vscode from this folder
+
+
+
+
+--------------------------windows-------------------------
+# Install Virtual env
+pip install virtualenv
+
+# Create a virtual evn
+virtualenv test
+# Enterd in to the direcotry
+cd test
+
+# Activate the virtual env
+Scripts\activate
+
+# Deactivate the virtual env
+Scripts\deactivate.bat
+
+where pip
+
