@@ -8,7 +8,9 @@ cd project1
 code .        # If you want to open vscode from this folder
 
 
-
+# Deactivate the virtual env
+cd project1
+deactivate
 
 --------------------------windows-------------------------
 # Install Virtual env
