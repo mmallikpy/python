@@ -1,5 +1,5 @@
 # ------------Script goal----------
-# Script will ping a remote host, every time it will ping 20 times and calculate the pcketloss. If it faild to ping 5 or more than 5 then it will trigared a message in telegram.
+# Script will ping a remote host, every time it will ping 20 times and calculate the packet loss. If it failed to ping 5 or more than 5 then it will trigared a message in telegram.
 # Tested on Ubuntu
 # Required library subprocess, requests
 # Telegram with a bot.
